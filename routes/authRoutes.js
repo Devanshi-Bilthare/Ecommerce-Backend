@@ -1,6 +1,7 @@
 const express = require('express')
-const {createUser,loginUserCtrl, getAllUser, getSingleUser, deleteUser, updateUser, blockUser, unBlockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishlist, saveAddress, userCart, getUserCart, emptyCart, applyCoupon, createOrder, getOrders, updateOrderStatus, getAllOrders} = require('../controllers/userCtrl')
+const {createUser,loginUserCtrl, getAllUser, getSingleUser, deleteUser, updateUser, blockUser, unBlockUser, handleRefreshToken, logout, updatePassword, forgotPasswordToken, resetPassword, loginAdmin, getWishlist, saveAddress, userCart, getUserCart, createOrder, removeFromCart, updateProductQuantityFromCart, getMyOrders, yearlyOrderCount, monthWiseOrderDetails} = require('../controllers/userCtrl')
 const {authMiddleware, isAdmin} = require('../middlewares/authMiddleware')
+const { checkout, paymentVerification } = require('../controllers/paymentCtrl')
 const router = express.Router()
 
 //register
@@ -10,10 +11,10 @@ router.post('/register',createUser)
 router.post('/forgot-password-token',forgotPasswordToken)
 
 //Reset password
-router.post('/reset-password/:token',resetPassword)
+router.put('/reset-password/:token',resetPassword)
 
 // update order status 
-router.put('/order/update-order/:id',authMiddleware,isAdmin,updateOrderStatus)
+// router.put('/order/update-order/:id',authMiddleware,isAdmin,updateOrderStatus)
 
 //login User
 router.post('/login',loginUserCtrl)
@@ -21,20 +22,31 @@ router.post('/login',loginUserCtrl)
 //login Admin
 router.post('/login-admin',loginAdmin)
 
+router.get('/getMonthWiseOrderDetails',authMiddleware,monthWiseOrderDetails)
+router.get('/getYearlyTotalOrders',authMiddleware,yearlyOrderCount)
+
 // Add Item To Cart 
 router.post('/cart',authMiddleware,userCart)
 
 //Apply Coupon
-router.post('/cart/apply-coupon',authMiddleware,applyCoupon)
+// router.post('/cart/apply-coupon',authMiddleware,applyCoupon)
 
 // create order 
-router.post('/cart/cash-order',authMiddleware,createOrder)
+router.post('/cart/create-order',authMiddleware,createOrder)
 
 //get the cart
 router.get('/cart',authMiddleware,getUserCart)
 
+router.post('/order/checkout',authMiddleware,checkout)
+router.post('/order/paymentVerification',authMiddleware,paymentVerification)
+
 // empty the cart
-router.delete('/empty-cart',authMiddleware,emptyCart)
+// router.delete('/empty-cart',authMiddleware,emptyCart)
+
+// delete product from cart
+router.delete('/delete-product-cart/:id',authMiddleware,removeFromCart)
+
+router.post("/update-product-cart/",authMiddleware,updateProductQuantityFromCart)
 
 //handle refresh token
 router.get('/refresh',handleRefreshToken)
@@ -63,13 +75,13 @@ router.put('/unblock/:id',authMiddleware,isAdmin,unBlockUser)
 router.get('/all-users',getAllUser)
 
 //get user orders
-router.get('/get-orders',authMiddleware,getOrders)
+router.get('/getmyorders',authMiddleware,getMyOrders)
 
 //get all orders
-router.get('/getallorders',authMiddleware,isAdmin,getAllOrders)
+// router.get('/getallorders',authMiddleware,isAdmin,getAllOrders)
 
 //get orders by user Id
-router.post('/getorderbyuser/:id',authMiddleware,isAdmin,getOrders)
+// router.post('/getorderbyuser/:id',authMiddleware,isAdmin,getOrders)
 
 
 // get single user
