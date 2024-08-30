@@ -18,10 +18,11 @@ const cloudinaryUploadImg = async (fileToUploads) => {
         {
           resource_type: "auto",
         }
-      );
+        );
+      });
     });
-  });
-};
+  };
+
 const cloudinaryDeleteImg = async (fileToDelete) => {
   return new Promise((resolve) => {
     cloudinary.uploader.destroy(fileToDelete, (result) => {
@@ -38,5 +39,6 @@ const cloudinaryDeleteImg = async (fileToDelete) => {
     });
   });
 };
+
 
 module.exports = { cloudinaryUploadImg, cloudinaryDeleteImg };
