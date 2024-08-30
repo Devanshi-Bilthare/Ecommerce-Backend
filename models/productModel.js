@@ -31,10 +31,10 @@ var productSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    images:[{
-        public_id:String,
-        url:String
-    }],
+    images:{
+        // public_id:String,
+        type:String
+    },
     color:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Color"
