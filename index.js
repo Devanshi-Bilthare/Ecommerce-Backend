@@ -5,6 +5,8 @@ dbConnect()
 const { errorHandler, notFound } = require('./middlewares/errorHandler')
 const app = express()
 const cors = require('cors')
+const fileuploader = require('express-fileupload')
+
 
 const authRouter = require('./routes/authRoutes')
 const productRouter = require('./routes/productRoute')
@@ -23,6 +25,7 @@ const morgan = require('morgan')
 app.use(morgan('dev'))
 app.use(cors())
 
+app.use(fileuploader())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(cookieParser())

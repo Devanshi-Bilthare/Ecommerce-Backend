@@ -6,7 +6,9 @@ const router = express.Router()
 
 
 //upload a product image
-router.post('/',authMiddleware,isAdmin,uploadPhoto.array('images',10),productImgResize,uploadImages)
+// router.post('/',authMiddleware,uploadPhoto.array('images',10),productImgResize,uploadImages)
+
+router.post('/',authMiddleware,isAdmin,uploadImages)
 
 //Delete a product image
 router.delete('/delete-img/:id',authMiddleware,isAdmin,DeleteImages)
